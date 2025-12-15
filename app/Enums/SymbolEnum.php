@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum SymbolEnum
+use App\Concerns\EnumTool;
+
+enum SymbolEnum: string
 {
-    case BTC;
-    case ETH;
+    use EnumTool;
+
+    case BTC = 'BTC';
+    case ETH = 'ETH';
 }
