@@ -24,14 +24,13 @@ use Laravel\Sanctum\HasApiTokens;
  * @property CarbonInterface $updated_at
  *
  * Relationships:
- *
  * @property-read Collection<int, Asset> $assets
  * @property-read Collection<int, Order> $orders
  */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.

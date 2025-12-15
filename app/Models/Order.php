@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * Relationships:
  * @property-read User $user
- *
  */
 class Order extends Model
 {
@@ -35,7 +34,7 @@ class Order extends Model
      */
     public function casts(): array
     {
-        return  [
+        return [
             'symbol' => SymbolEnum::class,
             'side' => OrderSideEnum::class,
             'status' => OrderStatusEnum::class,
