@@ -43,7 +43,12 @@ RUN npm install --force \
 
 ENV APP_ENV=local \
     APP_DEBUG=true \
-    APP_URL=http://localhost:8000
+    APP_URL=http://localhost:8000 \
+    VITE_REVERB_APP_ID=321586 \
+    VITE_REVERB_HOST="localhost" \
+    VITE_REVERB_PORT=8080 \
+    VITE_REVERB_SCHEME=http
+
 
 EXPOSE 8000
 
