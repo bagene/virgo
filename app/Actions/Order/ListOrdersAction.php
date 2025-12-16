@@ -29,7 +29,7 @@ final readonly class ListOrdersAction
     {
         return $this->user->orders()
             ->when($this->request->has('symbol'), function (Builder $query) {
-                $query->where('symbol', SymbolEnum::fromString($this->request->query('symbol', '')));
+                $query->where('symbol', SymbolEnum::tryFrom($this->request->query('symbol', '')));
             })
             ->get();
     }

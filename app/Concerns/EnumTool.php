@@ -2,30 +2,19 @@
 
 namespace App\Concerns;
 
-use InvalidArgumentException;
-use ValueError;
-
 trait EnumTool
 {
-    public static function fromString(string $name): self
+    public function is(self $enum): bool
     {
-        $value = strtoupper($name);
-
-        try {
-            return self::{$value};
-        } catch (ValueError) {
-            throw new InvalidArgumentException("No enum case with name {$name}");
-        }
+        return $this === $enum;
     }
 
-    public static function fromValue(mixed $value): self
+    public static function tryFrom(mixed $value): ?self
     {
-        foreach (self::cases() as $case) {
-            if ($case->value === $value) {
-                return $case;
-            }
+        try {
+            return self::from($value);
+        } catch (\ValueError) {
+            return null;
         }
-
-        throw new InvalidArgumentException("No enum case with value {$value}");
     }
 }

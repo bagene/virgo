@@ -36,13 +36,13 @@ class CreateOrderRequest extends FormRequest
     public function dto(): CreateOrderDTO
     {
         /**
-         * @var array{side: int, symbol: string, quantity: float, price: float} $validated
+         * @var array{side: int, symbol: string, amount: float, price: float} $validated
          */
         $validated = $this->validated();
 
         return new CreateOrderDTO(
-            side: OrderSideEnum::fromValue($validated['side']),
-            symbol: SymbolEnum::fromValue($validated['symbol']),
+            side: OrderSideEnum::from($validated['side']),
+            symbol: SymbolEnum::from($validated['symbol']),
             amount: $validated['amount'],
             price: $validated['price'],
         );

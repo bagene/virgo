@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\DTO\Order;
 
 use App\Enums\OrderSideEnum;
-use App\Enums\OrderStatusEnum;
 use App\Enums\SymbolEnum;
 
 final readonly class CreateOrderDTO

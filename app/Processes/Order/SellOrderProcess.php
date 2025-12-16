@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 class SellOrderProcess extends BaseOrderProcess
 {
     /**
-     * @param array<int, class-string<OrderRuleInterface>> $rules
+     * @param  array<int, class-string<OrderRuleInterface>>  $rules
      */
     public function __construct(
         #[Config('orders.rules.sell')]

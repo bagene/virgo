@@ -18,7 +18,6 @@ final readonly class AssetExist implements OrderRuleInterface
         //
     }
 
-
     public function execute(CreateOrderDTO $data): bool
     {
         return $this->user->assets()

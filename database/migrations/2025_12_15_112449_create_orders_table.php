@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
-            $table->decimal('price', 18);
-            $table->decimal('amount', 18);
+            $table->float('price', 18);
+            $table->float('amount', 18);
             $table->string('symbol', 6);
             $table->tinyInteger('side');
             $table->tinyInteger('status');

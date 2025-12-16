@@ -8,16 +8,16 @@ use App\Contracts\OrderProcess;
 use App\Contracts\OrderRuleInterface;
 use App\DTO\Order\CreateOrderDTO;
 use App\Enums\OrderStatusEnum;
+use App\Jobs\MatchOrderJob;
 use App\Models\Order;
 use App\Models\User;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 abstract class BaseOrderProcess implements OrderProcess
 {
     /**
-     * @param array<int, class-string<OrderRuleInterface>> $rules
+     * @param  array<int, class-string<OrderRuleInterface>>  $rules
      */
     public function __construct(
         protected array $rules,
@@ -29,7 +29,7 @@ abstract class BaseOrderProcess implements OrderProcess
     {
         /** @var User $user */
         $user = Auth::user();
-        $order = new Order();
+        $order = new Order;
 
         $order->user_id = $user->id;
         $order->side = $data->side;
@@ -39,6 +39,8 @@ abstract class BaseOrderProcess implements OrderProcess
         $order->status = OrderStatusEnum::OPEN;
 
         $order->save();
+
+        MatchOrderJob::dispatch($order);
 
         return $order;
     }

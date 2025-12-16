@@ -23,13 +23,13 @@ final readonly class SufficientBalance implements OrderRuleInterface
         $requiredBalance = bcmul(
             (string) $data->amount,
             (string) $data->price,
-            8
+            18
         );
 
         return bccomp(
             (string) $this->user->balance,
             $requiredBalance,
-            8
+            18
         ) >= 0;
     }
 

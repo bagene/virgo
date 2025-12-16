@@ -9,7 +9,7 @@ return [
             SufficientBalance::class,
         ],
         'sell' => [
-            SufficientAsset::class
+            SufficientAsset::class,
         ],
     ],
 ];

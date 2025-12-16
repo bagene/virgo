@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Processes\Order;
 
-use App\Contracts\OrderProcess;
 use App\Contracts\OrderRuleInterface;
 use App\DTO\Order\CreateOrderDTO;
 use App\Models\Order;
@@ -15,7 +14,7 @@ use Illuminate\Support\Facades\Auth;
 final class BuyOrderProcess extends BaseOrderProcess
 {
     /**
-     * @param array<int, class-string<OrderRuleInterface>> $rules
+     * @param  array<int, class-string<OrderRuleInterface>>  $rules
      */
     public function __construct(
         #[Config('orders.rules.buy')]
@@ -33,10 +32,11 @@ final class BuyOrderProcess extends BaseOrderProcess
             bcmul(
                 (string) $data->amount,
                 (string) $data->price,
-                8
+                18
             ),
-            8
+            18
         ));
+        $user->save();
 
         // Call parent handle to create the order
         return parent::handle($data);
