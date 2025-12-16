@@ -17,6 +17,7 @@ class ProfileController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'balance' => $user->balance,
+            'assets' => $user->assets,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
         ]);

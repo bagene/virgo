@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Order;
 
+use App\Enums\OrderStatusEnum;
 use App\Enums\SymbolEnum;
 use App\Models\Order;
 use App\Models\User;
@@ -30,6 +31,9 @@ final readonly class ListOrdersAction
         return $this->user->orders()
             ->when($this->request->has('symbol'), function (Builder $query) {
                 $query->where('symbol', SymbolEnum::tryFrom($this->request->query('symbol', '')));
+            })
+            ->when($this->request->has('status'), function (Builder $query) {
+                $query->where('status', OrderStatusEnum::fromLabel($this->request->query('status', '')));
             })
             ->get();
     }
