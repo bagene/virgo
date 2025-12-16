@@ -11,6 +11,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 
 final class MatchOrderJob implements ShouldQueue
 {
@@ -118,11 +119,20 @@ final class MatchOrderJob implements ShouldQueue
         $asset->locked_amount -= $amount;
         $asset->save();
 
-        $user->balance += floatval(bcmul(
+        $balanceAdded = bcmul(
             (string) $amount,
             (string) $sellOrder->price,
             18
-        ));
+        );
+
+        // Deduct commission
+        $balanceAdded = bcdiv(
+            $balanceAdded,
+            (string) (Config::get('orders.commission_percentage', 0) + 1),
+            18
+        );
+
+        $user->balance += floatval($balanceAdded);
 
         $user->save();
     }

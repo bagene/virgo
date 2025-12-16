@@ -12,4 +12,5 @@ return [
             SufficientAsset::class,
         ],
     ],
+    'commission_percentage' => 0.015,
 ];
