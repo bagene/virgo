@@ -3,8 +3,6 @@ set -e
 
 cd /var/www/html
 
-php artisan package:discover --ansi
-
 # Create .env from example if it doesn't exist
 if [ ! -f .env ]; then
   cp .env.example .env
@@ -24,7 +22,5 @@ fi
 # Run database migrations
 php artisan migrate --force
 
-# Start the Laravel development server
-php artisan serve --host=0.0.0.0 --port=8000
-
-
+# Start Supervisor (manages web, reverb, queue, etc.)
+exec supervisord -n -c /etc/supervisor/supervisord.conf
