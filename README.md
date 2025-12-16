@@ -35,3 +35,11 @@
 - Orders: `/order`
   - Create Buy or Sell order
 
+### Test Users
+
+- test@example.com
+  - Password: password
+  - Has Balance but no assets
+- test2@example.com
+  - Password: password
+  - Has Assets but no balance
