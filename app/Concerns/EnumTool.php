@@ -14,6 +14,9 @@ trait EnumTool
         return ucfirst(strtolower(str_replace('_', ' ', $this->name)));
     }
 
+    /**
+     * @return string[]
+     */
     public static function labels(): array
     {
         return array_map(

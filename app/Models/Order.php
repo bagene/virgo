@@ -32,8 +32,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Order extends Model
 {
-    /** @var list<string> $appends */
+    /** @var list<string> */
     protected $appends = ['side_label', 'status_label'];
+
     /**
      * @return string[]
      */
@@ -47,14 +48,8 @@ class Order extends Model
     }
 
     /**
-     * @param $attributes
-     * @return array<string>
+     * @return Attribute<string, OrderStatusEnum>
      */
-    public function append($attributes): array
-    {
-        return array_merge($attributes, ['side_label', 'status_label']);
-    }
-
     public function statusLabel(): Attribute
     {
         return Attribute::make(
@@ -62,6 +57,9 @@ class Order extends Model
         );
     }
 
+    /**
+     * @return Attribute<string, OrderSideEnum>
+     */
     public function sideLabel(): Attribute
     {
         return Attribute::make(

@@ -4,7 +4,7 @@ import {onMounted, reactive} from "vue";
 import {useOrder} from "@/composables/useOrder.ts";
 import {CreateOrderData} from "@/types/order.ts";
 
-const { orders, fetchOrders, createOrder } = useOrder();
+const { orders, fetchOrders, createOrder, listenForOrderUpdates } = useOrder();
 
 const form = reactive<CreateOrderData>({
     side: 'Buy',
@@ -16,6 +16,8 @@ const form = reactive<CreateOrderData>({
 onMounted(async () => {
     await fetchOrders();
 });
+
+listenForOrderUpdates();
 </script>
 
 <template>

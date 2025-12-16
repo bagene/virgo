@@ -13,6 +13,14 @@ class AuthController extends Controller
 {
     public function login(Request $request): JsonResponse
     {
+        if ($request->isMethod('get')) {
+            $user = $request->user();
+
+            return response()->json([
+                'user' => $user,
+            ]);
+        }
+
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {

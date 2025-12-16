@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {useAuth} from "@/composables/useAuth.ts";
+import { useAuth } from '@/composables/useAuth';
+import ToastContainer from '@/components/ToastContainer.vue';
 
 const { isAuthenticated, logout } = useAuth();
 </script>
@@ -39,6 +40,8 @@ const { isAuthenticated, logout } = useAuth();
         <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             <router-view />
         </main>
+
+        <ToastContainer />
     </div>
 </template>
 

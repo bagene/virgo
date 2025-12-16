@@ -8,3 +8,5 @@ parameters:
         - app/
 
     level: 9
+
+    checkModelAppends: false

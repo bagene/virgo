@@ -4,11 +4,13 @@ namespace App\Jobs;
 
 use App\Enums\OrderSideEnum;
 use App\Enums\OrderStatusEnum;
+use App\Events\OrderMatched;
 use App\Models\Asset;
 use App\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Cache;
 
 final class MatchOrderJob implements ShouldQueue
 {
@@ -28,6 +30,7 @@ final class MatchOrderJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $lock = Cache::lock('sync_orders');
         if ($this->order->side->is(OrderSideEnum::BUY)) {
             $this->handleBuyOrder();
 
@@ -35,6 +38,7 @@ final class MatchOrderJob implements ShouldQueue
         }
 
         $this->handleSellOrder();
+        $lock->release();
     }
 
     private function handleBuyOrder(): void
@@ -52,8 +56,8 @@ final class MatchOrderJob implements ShouldQueue
             if ($sellOrder->amount >= $this->order->amount) {
                 $this->updateSellOrderBalances($sellOrder, $this->order->amount);
                 $this->updateAsset($this->order, $this->order->amount);
-
                 $this->updateOrder($sellOrder);
+                $this->broadcastOrder($sellOrder);
 
                 return;
             }
@@ -64,6 +68,7 @@ final class MatchOrderJob implements ShouldQueue
             $this->updateAsset($this->order, $sellOrder->amount);
             $sellOrder->amount = 0;
             $sellOrder->status = OrderStatusEnum::FILLED;
+            $this->broadcastOrder($sellOrder);
             $sellOrder->save();
         }
 
@@ -87,6 +92,7 @@ final class MatchOrderJob implements ShouldQueue
                 $this->updateSellOrderBalances($this->order, $this->order->amount);
 
                 $this->updateOrder($buyOrder);
+                $this->broadcastOrder($buyOrder);
 
                 return;
             }
@@ -98,6 +104,7 @@ final class MatchOrderJob implements ShouldQueue
             $buyOrder->amount = 0;
             $buyOrder->status = OrderStatusEnum::FILLED;
             $buyOrder->save();
+            $this->broadcastOrder($buyOrder);
         }
     }
 
@@ -153,5 +160,11 @@ final class MatchOrderJob implements ShouldQueue
         $this->order->amount = 0;
         $this->order->status = OrderStatusEnum::FILLED;
         $this->order->save();
+    }
+
+    private function broadcastOrder(Order $matched): void
+    {
+        OrderMatched::dispatch($matched->user_id);
+        OrderMatched::dispatch($this->order->user_id);
     }
 }

@@ -4,9 +4,10 @@ import {useAuth} from "@/composables/useAuth.ts";
 import {User} from "@/types/auth.ts";
 import {useOrder} from "@/composables/useOrder.ts";
 import {onMounted, reactive, watch} from "vue";
+import {useEcho} from "@laravel/echo-vue";
 
 const { user } = useAuth();
-const { orders, fetchOrders, symbols } = useOrder();
+const { orders, fetchOrders, symbols, listenForOrderUpdates } = useOrder();
 
 const params = reactive<{symbol: string|null, status: string|null}>({
     symbol: null,
@@ -40,6 +41,8 @@ onMounted(async () => {
 watch(params, async () => {
     await fetchOrders(params);
 });
+
+listenForOrderUpdates();
 </script>
 <template>
     <div class="px-10 space-y-6 text-gray-600">
