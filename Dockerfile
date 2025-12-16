@@ -37,18 +37,11 @@ RUN composer install \
 # Copy the rest of the application
 COPY . .
 
+COPY .env.example .env
+
 # Install JS dependencies and build assets
 RUN npm install --force \
     && npm run build
-
-ENV APP_ENV=local \
-    APP_DEBUG=true \
-    APP_URL=http://localhost:8000 \
-    VITE_REVERB_APP_ID=321586 \
-    VITE_REVERB_HOST="localhost" \
-    VITE_REVERB_PORT=8080 \
-    VITE_REVERB_SCHEME=http
-
 
 EXPOSE 8000
 
@@ -58,7 +51,7 @@ RUN chmod +x /entrypoint.sh \
     && chown www-data:www-data /entrypoint.sh
 
 # Ensure storage, cache, and database directories are writable
-RUN chown -R www-data:www-data storage bootstrap/cache database
+RUN chown -R www-data:www-data storage bootstrap/cache database .env
 
 USER www-data
 
