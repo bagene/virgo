@@ -14,6 +14,14 @@ trait EnumTool
         return ucfirst(strtolower(str_replace('_', ' ', $this->name)));
     }
 
+    public static function labels(): array
+    {
+        return array_map(
+            fn (self $case) => $case->label(),
+            self::cases()
+        );
+    }
+
     public static function tryFrom(mixed $value): ?self
     {
         try {

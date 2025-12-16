@@ -26,7 +26,7 @@ class CreateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'side' => ['required', 'integer', Rule::enum(OrderSideEnum::class)],
+            'side' => ['required', 'string', Rule::in(OrderSideEnum::labels())],
             'symbol' => ['required', 'string', Rule::enum(SymbolEnum::class)],
             'amount' => ['required', 'numeric', 'min:0.0001'],
             'price' => ['required', 'numeric', 'min:0.01'],
@@ -36,12 +36,12 @@ class CreateOrderRequest extends FormRequest
     public function dto(): CreateOrderDTO
     {
         /**
-         * @var array{side: int, symbol: string, amount: float, price: float} $validated
+         * @var array{side: string, symbol: string, amount: float, price: float} $validated
          */
         $validated = $this->validated();
 
         return new CreateOrderDTO(
-            side: OrderSideEnum::from($validated['side']),
+            side: OrderSideEnum::fromLabel($validated['side']),
             symbol: SymbolEnum::from($validated['symbol']),
             amount: $validated['amount'],
             price: $validated['price'],

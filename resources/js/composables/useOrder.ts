@@ -1,11 +1,6 @@
-import {Order} from "@/types/order.ts";
+import {CreateOrderData, FetchOrderParams, Order} from "@/types/order.ts";
 import {computed, ref} from "vue";
 import axios from "axios";
-
-interface FetchOrderParams {
-    status?: 'open' | 'filled' | 'cancelled' | null;
-    symbol?: string | null;
-}
 
 const orders = ref<Order[]>([]);
 const symbols = computed(() => {
@@ -34,10 +29,20 @@ export function useOrder() {
         }
     }
 
+    const createOrder = async (orderData: CreateOrderData) => {
+        try {
+            const response = await axios.post('/api/orders', orderData);
+            orders.value.push(response.data);
+        } catch (error) {
+            console.error('Error creating order:', error);
+        }
+    }
+
     return {
         orders,
         fetchOrders,
-        symbols
+        symbols,
+        createOrder,
     };
 }
 
