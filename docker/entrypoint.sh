@@ -3,6 +3,9 @@ set -e
 
 cd /var/www/html
 
+php artisan package:discover --ansi
+
+
 # Create .env from example if it doesn't exist
 if [ ! -f .env ]; then
   cp .env.example .env
