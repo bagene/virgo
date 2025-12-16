@@ -43,3 +43,9 @@
 - test2@example.com
   - Password: password
   - Has Assets but no balance
+
+### Testing
+
+- To test real time updates, open two browser windows and log in with different test users.
+- Create orders in one window and observe updates in the other.
+- Use `test@example.com` for buying and `test2@example.com` for selling
