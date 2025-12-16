@@ -125,10 +125,13 @@ final class MatchOrderJob implements ShouldQueue
             18
         );
 
+        /** @var float $commisionPercentage */
+        $commisionPercentage = Config::get('orders.commission_percentage', 0);
+
         // Deduct commission
         $balanceAdded = bcdiv(
             $balanceAdded,
-            (string) (Config::get('orders.commission_percentage', 0) + 1),
+            (string) ($commisionPercentage + 1),
             18
         );
 
